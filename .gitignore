@@ -1,0 +1,8 @@
+.project
+.settings
+prefs.json
+package-lock.json
+**/build/
+**/node_modules/
+.classpath
+.DS_Store
