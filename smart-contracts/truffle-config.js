@@ -1,5 +1,3 @@
-var WalletProvider = require("truffle-wallet-provider");
-
 module.exports = {
 	networks : {
 		development : {
