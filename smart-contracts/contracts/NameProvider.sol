@@ -23,6 +23,9 @@ contract NameProvider is Ownable {
     //name storage for addresses
     mapping(bytes32 => mapping(address => string)) addressNames;
     
+    //marks namespaces as already used on first name save to specified namespace
+    mapping(bytes32 => bool) takenNamespaces;
+    
     //name storage for tokens
     mapping(address => mapping(uint256 => string)) tokenNames;
     
@@ -36,6 +39,11 @@ contract NameProvider is Ownable {
     event TokenNameChanged(address tokenProvider, uint256 tokenId, string name);
     
     event TokenDescriptionChanged(address tokenProvider, uint256 tokenId, string description);
+    
+    function NameProvider(address _owner) public {
+        require(_owner != address(0));
+        owner = _owner;
+    }
     
     modifier setTokenText(address _tokenInterface, uint256 _tokenId, string _text){
         //check fee
@@ -182,6 +190,10 @@ contract NameProvider is Ownable {
         }
     }
     
+    function namespaceTaken(bytes32 _namespace) external view returns(bool) {
+        return takenNamespaces[_namespace];
+    }
+    
     function setFee(uint256 _fee) onlyOwner external {
         FEE = _fee;
     }
@@ -192,6 +204,9 @@ contract NameProvider is Ownable {
     
     function _setName(bytes32 _namespace, string _name) internal {
         addressNames[_namespace][msg.sender] = _name;
+        if (!takenNamespaces[_namespace]) {
+            takenNamespaces[_namespace] = true;
+        }
         NameChanged(_namespace, msg.sender, _name);
     }
     

@@ -1,9 +1,5 @@
 var NameProvider = artifacts.require("NameProvider");
 
-var path = require("path");
-var fs = require('fs');
-
-
 module.exports = function(deployer, network) {
 	//before deploy logic
 	beforeDeploy(deployer, network);
